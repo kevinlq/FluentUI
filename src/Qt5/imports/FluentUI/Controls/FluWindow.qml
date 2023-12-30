@@ -13,6 +13,7 @@ Window {
     property var background : com_background
     property bool fixSize: false
     property Component loadingItem: com_loading
+    property Component borderItem: com_window_border
     property bool fitsAppBarWindows: false
     property Item appBar: FluAppBar {
         title: window.title
@@ -30,6 +31,13 @@ Window {
         }
         return FluTheme.windowBackgroundColor
     }
+    property color borderColor: {
+        if(window.active){
+            return Qt.rgba(51/255,51/255,51/255,1)
+        }
+        return Qt.rgba(153/255,153/255,153/255,1)
+    }
+
     property bool stayTop: false
     property var _pageRegister
     property string _route
@@ -254,7 +262,7 @@ Window {
         id:loader_window_border
         anchors.fill: parent
         z:999
-        sourceComponent: FluApp.useSystemAppBar ? undefined : com_window_border
+        sourceComponent: FluApp.useSystemAppBar ? undefined : borderItem
     }
     Component{
         id:com_window_border
@@ -268,12 +276,7 @@ Window {
                 color: Qt.rgba(0,0,0,0)
                 border.width: 1
                 visible: FluTools.isLinux()
-                border.color: {
-                    if(window.active){
-                        return Qt.rgba(51/255,51/255,51/255,1)
-                    }
-                    return Qt.rgba(153/255,153/255,153/255,1)
-                }
+                border.color: window.borderColor
             }
         }
     }
